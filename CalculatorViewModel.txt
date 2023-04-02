@@ -1,0 +1,63 @@
+class CalculatorViewModel: ObservableObject {
+    @Published var model = CalculatorModel()
+    var currentNumber = "0"
+    var decimalPoint = false
+    var performingOperation = false
+    
+    func numberPressed(_ number: Int) {
+        if performingOperation {
+            currentNumber = "0"
+            performingOperation = false
+        }
+        if decimalPoint {
+            currentNumber += "\(number)"
+        } else {
+            if currentNumber == "0" {
+                currentNumber = "\(number)"
+            } else {
+                currentNumber += "\(number)"
+            }
+        }
+        model.number2 = Double(currentNumber)
+    }
+    
+    func decimalPressed() {
+        if !decimalPoint {
+            decimalPoint = true
+            currentNumber += "."
+        }
+    }
+    
+    func operationPressed(_ operation: CalculatorModel.Operation) {
+        if model.number1 == nil {
+            model.number1 = model.result
+        } else {
+            model.number2 = model.result
+        }
+        model.operation = operation
+        currentNumber = "0"
+        performingOperation = true
+        decimalPoint = false
+    }
+    
+    func equalsPressed() {
+        model.number2 = model.result
+        currentNumber = "\(model.result)"
+        decimalPoint = false
+        performingOperation = false
+    }
+    
+    func clearPressed() {
+        model.clear()
+        currentNumber = "0"
+        decimalPoint = false
+        performingOperation = false
+    }
+    
+    func signChange() {
+        if let num = Double(currentNumber) {
+            currentNumber = "\(-num)"
+            model.number2 = Double(currentNumber)
+        }
+    }
+}

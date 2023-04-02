@@ -1,0 +1,40 @@
+struct CalculatorModel {
+    var number1: Double?
+    var number2: Double?
+    var operation: Operation?
+    var result: Double {
+        get {
+            guard let num1 = number1, let num2 = number2 else {
+                return 0
+            }
+            switch operation {
+            case .addition:
+                return num1 + num2
+            case .subtraction:
+                return num1 - num2
+            case .multiplication:
+                return num1 * num2
+            case .division:
+                return num1 / num2
+            case .percentage:
+                return num1 * (num2 / 100)
+            case .none:
+                return num1
+            }
+        }
+    }
+    
+    mutating func clear() {
+        number1 = nil
+        number2 = nil
+        operation = nil
+    }
+    
+    enum Operation {
+        case addition
+        case subtraction
+        case multiplication
+        case division
+        case percentage
+    }
+}
